@@ -30,7 +30,6 @@
     </header>
 
   <div class="container time-block">
-
     <!-- <i class="fas fa-save"></i> DARK SAVE ICON WHEN CLICK -->
   </div>
 
@@ -51,39 +50,61 @@
   var hours = [ { hour:"9 AM", number:9 }, { hour:"10 AM", number:10 }, { hour:"11 AM", number:11 },
                 { hour:"12 PM", number:12 }, { hour:"1 PM", number:13 }, { hour:"2 PM", number:14 },
                 { hour:"3 PM", number:15 }, { hour:"4 PM", number:16 }, { hour:"5 PM", number:17 } ] ;
+    
   
     for( var i=0; i < hours.length; i++ ){
       var hour = hours[i].hour;
       var numbers = Number(hours[i].number);
+      var workduty = $('#'+ numbers).val();
 
       containerEl.innerHTML += `
           <div class="row">
             <div class="col-sm-1 hour">${hour}</div>
-            <textarea class="col-sm-10" id="${numbers}"></textarea>
-            <button type="col-sm-1 button" onClick="saveWork()" class="saveBtn"><i class="far fa-save"></i></button>
+            <textarea class="col-sm-10" data-idx="" id="${numbers}"></textarea>
+            <button type="col-sm-1 button" onClick="saveWork(${numbers})" class="saveBtn"><i class="far fa-save"></i></button>
           </div>`
       
-        if (currentHour === numbers){
-        console.log ("where is my present colour damn");
+        if (currentHour == numbers){
+        console.log ("This is present hour!");
         $('#'+ numbers).addClass('present');
         } 
         else if (currentHour > numbers){
-        console.log ("where is my past colour damn");
+        console.log ("This is past hour!");
         $('#'+ numbers).addClass('past');
         } 
         else {
-        console.log ("where is my future colour damn");
+        console.log ("This is future hour!");
         $('#'+ numbers).addClass('future');
         }
-    }
-  
-    //Save work text into Local Storage
-  var workList = localStorage.todoList ? JSON.parse(localStorage.todoList) : [ ];
 
-  function saveWork (){
+        if (localStorage.workLists){
+          var parsed = JSON.parse(localStorage.workLists);
+          console.log(parsed);
+          $('#'+numbers).html($('#'+ numbers).val());
+        }
+
+    }
     
-    
-  }
+    //Save work text into Local Storage
+    function saveWork (numbers) {
+
+      console.log('Iam not sure if this is working :(')
+
+      // var workduty = $('#'+ numbers).val();
+      var workLists;
+var tempList = localStorage.workLists ? JSON.parse(localStorage.workLists) : { };
+    var workduty = $('#'+ numbers).val();
+      // var tempList = localStorage.workLists ? JSON.parse(localStorage.workLists) : { };
+      tempList['time'+numbers] = workduty
+      console.log(tempList);
+      console.log (workduty);
+  
+      localStorage.setItem('workLists', JSON.stringify(tempList));
+      console.log(localStorage.workLists);
+      console.log((localStorage.getItem('workLists')));
+
+    }
+
     </script>
   </body>
 </html>
